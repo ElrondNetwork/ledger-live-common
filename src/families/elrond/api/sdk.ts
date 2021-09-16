@@ -126,3 +126,24 @@ export const broadcastTransaction = async (blob: any) => {
     hash,
   };
 };
+
+export const getAccountESDTTokens = async (
+  // address: string,
+): Promise<any[]> => {
+  // const tokens = await api.getTokensForAddress(address);
+
+  return [{
+    identifier: '4452442d633462303861',
+    balance: '100',
+  }];
+}
+
+export const getAccountESDTOperations = async (
+  accountId: string,
+  address: string,
+  tokenIdentifier: string,
+): Promise<Operation[]> => {
+  const accountESDTTransactions = await api.getESDTTransactionsForAddress(address, tokenIdentifier);
+
+  return accountESDTTransactions.map(transaction => transactionToOperation(accountId, address, transaction));
+}

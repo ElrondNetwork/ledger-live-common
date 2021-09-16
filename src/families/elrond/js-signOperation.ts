@@ -57,13 +57,21 @@ const signOperation = ({
         if (!transaction.fees) {
           throw new FeeNotLoaded();
         }
+        // Collect data for an ESDT transfer
+        const { subAccounts } = account;
+        const { subAccountId } = transaction;
+        const tokenAccount = !subAccountId
+          ? null
+          : subAccounts && subAccounts.find((ta) => ta.id === subAccountId);
 
         const elrond = new Elrond(transport);
         await elrond.setAddress(account.freshAddressPath);
         const { version } = await elrond.getAppConfiguration();
         const signUsingHash = compareVersions(version, "1.0.11") >= 0;
+
         const unsigned = await buildTransaction(
           account,
+          tokenAccount,
           transaction,
           signUsingHash
         );
