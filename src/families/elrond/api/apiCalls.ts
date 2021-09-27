@@ -121,7 +121,7 @@ export default class ElrondApi {
       from = from + TRANSACTIONS_SIZE;
     }
 
-    return allTransactions; 
+    return allTransactions;
   }
 
   async getBlockchainBlockHeight() {
