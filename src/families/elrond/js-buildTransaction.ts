@@ -55,6 +55,12 @@ export const buildTransaction = async (
 
         transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in a claimRewards transaction
         break;
+      case "withdraw":
+        gasLimit = GAS.DELEGATE;
+        t.data = ElrondEncodeTransaction.withdraw();
+
+        transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in a withdraw transaction
+        break;
       case "reDelegateRewards":
         gasLimit = GAS.DELEGATE;
         t.data = ElrondEncodeTransaction.reDelegateRewards();

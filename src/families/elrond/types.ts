@@ -40,7 +40,8 @@ export type ElrondTransactionMode =
   | "delegate"
   | "reDelegateRewards"
   | "unDelegate"
-  | "claimRewards";
+  | "claimRewards"
+  | "withdraw";
 
 /**
  * Elrond transaction
