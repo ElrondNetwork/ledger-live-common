@@ -24,6 +24,10 @@ export class ElrondEncodeTransaction {
     return Buffer.from(`claimRewards`).toString("base64");
   }
 
+  static withdraw(): string {
+    return Buffer.from(`withdraw`).toString("base64");
+  }
+
   static reDelegateRewards(): string {
     return Buffer.from(`reDelegateRewards`).toString("base64");
   }
