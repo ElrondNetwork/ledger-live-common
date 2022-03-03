@@ -49,6 +49,32 @@ export const buildTransaction = async (
         t.data = ElrondEncodeTransaction.delegate();
 
         break;
+      case "claimRewards":
+        gasLimit = GAS.CLAIM;
+        t.data = ElrondEncodeTransaction.claimRewards();
+
+        transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in a claimRewards transaction
+        break;
+      case "reDelegateRewards":
+        gasLimit = GAS.DELEGATE;
+        t.data = ElrondEncodeTransaction.reDelegateRewards();
+
+        transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in a reDelegateRewards transaction
+        break;
+      case "unDelegate":
+        if (transactionValue.lt(MIN_DELEGATION_AMOUNT)) {
+          throw new Error(
+            `Undelegated amount should be minimum ${MIN_DELEGATION_AMOUNT} EGLD`
+          );
+        }
+
+        gasLimit = GAS.DELEGATE;
+        t.data = ElrondEncodeTransaction.unDelegate(t);
+
+        transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in a unDelegate transaction
+        break;
+      case "send":
+        break;
       default:
         throw new Error("Unsupported transaction.mode = " + t.mode);
     }

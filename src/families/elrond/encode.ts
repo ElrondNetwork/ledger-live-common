@@ -19,4 +19,23 @@ export class ElrondEncodeTransaction {
   static delegate(): string {
     return Buffer.from(`delegate`).toString("base64");
   }
+
+  static claimRewards(): string {
+    return Buffer.from(`claimRewards`).toString("base64");
+  }
+
+  static reDelegateRewards(): string {
+    return Buffer.from(`reDelegateRewards`).toString("base64");
+  }
+
+  static unDelegate(t: Transaction): string {
+    let amountHex = t.amount.toString(16);
+
+    //hex amount length must be even so protocol would treat it as an ESDT transfer
+    if (amountHex.length % 2 !== 0) {
+      amountHex = "0" + amountHex;
+    }
+
+    return Buffer.from(`unDelegate@${amountHex}`).toString("base64");
+  }
 }

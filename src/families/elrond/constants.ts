@@ -9,6 +9,7 @@ export const MAX_PAGINATION_SIZE = 10000;
 export const GAS = {
   ESDT_TRANSFER: 500000,
   DELEGATE: 12000000,
+  CLAIM: 6000000,
 };
 export const CHAIN_ID = "1";
 export const MIN_DELEGATION_AMOUNT: BigNumber = new BigNumber(1);

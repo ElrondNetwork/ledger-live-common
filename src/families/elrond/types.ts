@@ -38,6 +38,7 @@ export type ElrondProtocolTransaction = {
 export type ElrondTransactionMode =
   | "send"
   | "delegate"
+  | "reDelegateRewards"
   | "unDelegate"
   | "claimRewards";
 
