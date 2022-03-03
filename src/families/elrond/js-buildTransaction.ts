@@ -4,10 +4,11 @@ import type {
   Transaction,
 } from "./types";
 import type { Account, SubAccount } from "../../types";
-import { encodeESDTTransfer, getNonce } from "./logic";
+import { getNonce } from "./logic";
 import { getNetworkConfig } from "./api";
-import { ESDT_TRANSFER_GAS, HASH_TRANSACTION } from "./constants";
+import { GAS, HASH_TRANSACTION, MIN_DELEGATION_AMOUNT } from "./constants";
 import BigNumber from "bignumber.js";
+import { ElrondEncodeTransaction } from "./encode";
 /**
  *
  * @param {Account} a
@@ -24,17 +25,33 @@ export const buildTransaction = async (
   const { chainID, gasPrice } = networkConfig;
   let gasLimit = networkConfig.gasLimit;
 
-  let transactionValue;
+  let transactionValue: BigNumber;
 
   if (ta) {
-    t.data = encodeESDTTransfer(t, ta);
-    gasLimit = ESDT_TRANSFER_GAS; //gasLimit for and ESDT transfer
+    t.data = ElrondEncodeTransaction.ESDTTransfer(t, ta);
+    gasLimit = GAS.ESDT_TRANSFER; //gasLimit for and ESDT transfer
 
     transactionValue = new BigNumber(0); //amount of EGLD to be sent should be 0 in an ESDT transfer
   } else {
     transactionValue = t.useAllAmount
       ? a.balance.minus(t.fees ? t.fees : new BigNumber(0))
       : t.amount;
+
+    switch (t.mode) {
+      case "delegate":
+        if (transactionValue.lt(MIN_DELEGATION_AMOUNT)) {
+          throw new Error(
+            `Delegation amount should be minimum ${MIN_DELEGATION_AMOUNT} EGLD`
+          );
+        }
+
+        gasLimit = GAS.DELEGATE;
+        t.data = ElrondEncodeTransaction.delegate();
+
+        break;
+      default:
+        throw new Error("Unsupported transaction.mode = " + t.mode);
+    }
   }
 
   const unsigned: ElrondProtocolTransaction = {
