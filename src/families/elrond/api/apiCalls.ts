@@ -3,7 +3,7 @@ import {
   HASH_TRANSACTION,
   METACHAIN_SHARD,
   MAX_PAGINATION_SIZE,
-  ESDT_TRANSFER_GAS,
+  GAS,
 } from "../constants";
 import {
   ElrondProtocolTransaction,
@@ -95,7 +95,7 @@ export default class ElrondApi {
 
     if (data) {
       // gasLimit for an ESDT transfer
-      gasLimit = ESDT_TRANSFER_GAS;
+      gasLimit = GAS.ESDT_TRANSFER;
     }
 
     const transaction: ElrondProtocolTransaction = {

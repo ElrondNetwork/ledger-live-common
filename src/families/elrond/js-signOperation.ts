@@ -22,6 +22,7 @@ const buildOptimisticOperation = (
       account.subAccounts &&
       account.subAccounts.find((ta) => ta.id === transaction.subAccountId)) ||
     null;
+
   let value;
   if (tokenAccount) {
     value = new BigNumber(0);
