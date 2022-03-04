@@ -185,6 +185,9 @@ export const getFees = async (t: Transaction): Promise<BigNumber> => {
 /**
  * Broadcast blob to blockchain
  */
-export const broadcastTransaction = async (blob: any): Promise<string> => {
-  return await api.submit(blob);
+export const broadcastTransaction = async (
+  operation: Operation,
+  signature: string
+): Promise<string> => {
+  return await api.submit(operation, signature);
 };

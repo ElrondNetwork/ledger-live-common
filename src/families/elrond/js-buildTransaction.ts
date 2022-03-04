@@ -6,7 +6,12 @@ import type {
 import type { Account, SubAccount } from "../../types";
 import { getNonce } from "./logic";
 import { getNetworkConfig } from "./api";
-import { GAS, HASH_TRANSACTION, MIN_DELEGATION_AMOUNT } from "./constants";
+import {
+  GAS,
+  HASH_TRANSACTION,
+  MIN_DELEGATION_AMOUNT,
+  MIN_DELEGATION_AMOUNT_DENOMINATED,
+} from "./constants";
 import BigNumber from "bignumber.js";
 import { ElrondEncodeTransaction } from "./encode";
 /**
@@ -18,7 +23,7 @@ export const buildTransaction = async (
   a: Account,
   ta: SubAccount | null | undefined,
   t: Transaction
-) => {
+): Promise<string> => {
   const address = a.freshAddress;
   const nonce = getNonce(a);
   const networkConfig: NetworkInfo = await getNetworkConfig();
@@ -41,7 +46,7 @@ export const buildTransaction = async (
       case "delegate":
         if (transactionValue.lt(MIN_DELEGATION_AMOUNT)) {
           throw new Error(
-            `Delegation amount should be minimum ${MIN_DELEGATION_AMOUNT} EGLD`
+            `Delegation amount should be minimum ${MIN_DELEGATION_AMOUNT_DENOMINATED} EGLD`
           );
         }
 
@@ -70,7 +75,7 @@ export const buildTransaction = async (
       case "unDelegate":
         if (transactionValue.lt(MIN_DELEGATION_AMOUNT)) {
           throw new Error(
-            `Undelegated amount should be minimum ${MIN_DELEGATION_AMOUNT} EGLD`
+            `Undelegated amount should be minimum ${MIN_DELEGATION_AMOUNT_DENOMINATED} EGLD`
           );
         }
 
@@ -97,6 +102,7 @@ export const buildTransaction = async (
     chainID,
     ...HASH_TRANSACTION,
   };
+
   // Will likely be a call to Elrond SDK
   return JSON.stringify(unsigned);
 };
