@@ -35,7 +35,7 @@ export class ElrondEncodeTransaction {
   static unDelegate(t: Transaction): string {
     let amountHex = t.amount.toString(16);
 
-    //hex amount length must be even so protocol would treat it as an ESDT transfer
+    //hex amount length must be even
     if (amountHex.length % 2 !== 0) {
       amountHex = "0" + amountHex;
     }
