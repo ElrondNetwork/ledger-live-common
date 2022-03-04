@@ -12,4 +12,7 @@ export const GAS = {
   CLAIM: 6000000,
 };
 export const CHAIN_ID = "1";
-export const MIN_DELEGATION_AMOUNT: BigNumber = new BigNumber(1);
+export const MIN_DELEGATION_AMOUNT: BigNumber = new BigNumber(
+  1000000000000000000
+);
+export const MIN_DELEGATION_AMOUNT_DENOMINATED: BigNumber = new BigNumber(1);
